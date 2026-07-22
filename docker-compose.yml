@@ -41,22 +41,6 @@ services:
     networks:
       - data_net
 
-  # ClickHouse
-  clickhouse:
-    image: clickhouse:latest
-    container_name: clickhouse
-    ports:
-      - "8123:8123"   # HTTP
-      - "9000:9000"   # Native
-    volumes:
-      - clickhouse_data:/var/lib/clickhouse
-    environment:
-      CLICKHOUSE_DB: dw_ods
-      CLICKHOUSE_USER: default
-      CLICKHOUSE_PASSWORD: mypassword
-    networks:
-      - data_net
-
   # Redis
   redis:
     image: redis:alpine3.22
@@ -70,39 +54,6 @@ services:
     networks:
       - data_net
 
-  # Flink JobManager
-  jobmanager:
-    image: apache/flink:1.19.1-java17
-    container_name: flink-jobmanager
-    platform: linux/amd64
-    environment:
-      - JOB_MANAGER_RPC_ADDRESS=jobmanager
-    ports:
-      - "8081:8081"
-    command: jobmanager
-    depends_on:
-      - kafka
-      - clickhouse
-      - redis
-    networks:
-      - data_net
-
-  # Flink TaskManager
-  taskmanager:
-    image: apache/flink:1.19.1-java17
-    container_name: flink-taskmanager
-    platform: linux/amd64
-    environment:
-      - JOB_MANAGER_RPC_ADDRESS=jobmanager
-    depends_on:
-      - jobmanager
-      - clickhouse
-      - redis
-    command: taskmanager
-    networks:
-      - data_net
-
 volumes:
-  clickhouse_data:
   redis_data:
   mongo_data:

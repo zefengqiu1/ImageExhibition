@@ -8,53 +8,21 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.WeekFields;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
- * 图片热度排行服务
- * 支持：实时榜（5分钟）、日榜 直接写到Redis
+ * 图片热度排行服务。
  *
- * 周榜、月榜：
- * 会有flink去写到clickhouse 数据仓库
- *key 是怎么设计的
- * •
- * 实时榜：rank:realtime:{country}:{minuteTimestamp}
- * ◦
- * 前缀常量：REALTIME_KEY = "rank:realtime:"
- * ◦
- * suffix 是 System.currentTimeMillis() / 60000，也就是“分钟级时间桶”
- * ◦
- * 例子：rank:realtime:asia:28541234
- * ◦
- * 查询时会把最近 5 个分钟桶的数据累加
- * •
- * 日榜：rank:daily:{country}:{yyyyMMdd}
- * ◦
- * 前缀常量：DAILY_KEY = "rank:daily:"
- * ◦
- * suffix 是当天日期，格式 yyyyMMdd
- * ◦
- * 例子：rank:daily:domestic:20260421
- *周榜：rank:weekly:{country} 或 rank:weekly:{country}:{weekKey}
- * ◦
- * 前缀常量：WEEKLY_KEY = "rank:weekly:"
- * ◦
- * getWeeklyTop() 传的是空字符串，所以先生成 rank:weekly:asia:，再用 trimTrailingColon() 去掉最后一个冒号，变成 rank:weekly:asia
- * ◦
- * getWeeklyTopByWeek() 则是历史周榜，格式：rank:weekly:asia:YYYY-Www
- * •
- * 月榜：rank:monthly:{country} 或 rank:monthly:{country}:{yyyyMM}
- * ◦
- * 前缀常量：MONTHLY_KEY = "rank:monthly:"
- * ◦
- * getMonthlyTop() 当前月榜最终 key 是 rank:monthly:asia
- * ◦
- * getMonthlyTopByMonth() 历史月榜格式是 rank:monthly:asia:202604
- *
- *
+ * Redis key:
+ * - 实时榜：rank:realtime:{country}:{minuteTimestamp}
+ * - 日榜：rank:daily:{country}:{yyyyMMdd}
+ * - 周榜：rank:weekly:{country}:{YYYY-Www}
+ * - 月榜：rank:monthly:{country}:{yyyyMM}
  */
 @Slf4j
 @Service
@@ -72,6 +40,10 @@ public class ImageHotRankService {
     private static final String DAILY_KEY = "rank:daily:";       // 日榜
     private static final String WEEKLY_KEY = "rank:weekly:";     // 周榜
     private static final String MONTHLY_KEY = "rank:monthly:";   // 月榜
+    private static final DateTimeFormatter DAY_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
+    private static final DateTimeFormatter MONTH_FORMATTER = DateTimeFormatter.ofPattern("yyyyMM");
+    private static final long WEEKLY_HISTORY_TTL_DAYS = 180;
+    private static final long MONTHLY_HISTORY_TTL_DAYS = 540;
     // no cache for rank lists
     private static final Set<String> ALLOWED_COUNTRIES =
             Set.of("asia", "domestic", "european", "all");
@@ -85,7 +57,7 @@ public class ImageHotRankService {
         String timestamp = String.valueOf(now / 60000); // 按分钟分桶
         String normalizedCountry = normalizeCountry(country);
 
-        // 0. 发送事件到 Kafka（供 Flink 消费）
+        // 0. 发送事件到 Kafka（供异步消费）
         if (eventProducer != null) {
             eventProducer.sendViewEvent(imageId);
         }
@@ -94,10 +66,18 @@ public class ImageHotRankService {
         recordRealtime(imageId, normalizedCountry, timestamp);
         recordRealtime(imageId, "all", timestamp);
 
-        // 2. 更新日榜
-        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        recordDaily(imageId, normalizedCountry, today);
-        recordDaily(imageId, "all", today);
+        // 2. 更新日榜、周榜、月榜
+        LocalDate today = LocalDate.now();
+        recordDaily(imageId, normalizedCountry, today.format(DAY_FORMATTER));
+        recordDaily(imageId, "all", today.format(DAY_FORMATTER));
+
+        String weekKey = getIsoWeekKey(today);
+        recordWeekly(imageId, normalizedCountry, weekKey);
+        recordWeekly(imageId, "all", weekKey);
+
+        String monthKey = YearMonth.from(today).format(MONTH_FORMATTER);
+        recordMonthly(imageId, normalizedCountry, monthKey);
+        recordMonthly(imageId, "all", monthKey);
 
         log.info("记录浏览: imageId={}, country={}, timestamp={}", imageId, normalizedCountry, timestamp);
     }
@@ -139,7 +119,7 @@ public class ImageHotRankService {
      * 获取日榜 TOP N
      */
     public List<HotImage> getDailyTop(int topN, String country) {
-        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        String today = LocalDate.now().format(DAY_FORMATTER);
         String key = buildCountryKey(DAILY_KEY, normalizeCountry(country), today);
         List<HotImage> result = getTopFromZSet(key, topN, "daily");
         return result;
@@ -149,8 +129,9 @@ public class ImageHotRankService {
      * 获取周榜 TOP N
      */
     public List<HotImage> getWeeklyTop(int topN, String country) {
-        String key = buildCountryKey(WEEKLY_KEY, normalizeCountry(country), "");
-        return getTopFromZSet(trimTrailingColon(key), topN, "weekly");
+        String weekKey = getIsoWeekKey(LocalDate.now());
+        String key = buildCountryKey(WEEKLY_KEY, normalizeCountry(country), weekKey);
+        return getTopFromZSet(key, topN, "weekly");
     }
 
     /**
@@ -167,8 +148,9 @@ public class ImageHotRankService {
      * 获取月榜 TOP N
      */
     public List<HotImage> getMonthlyTop(int topN, String country) {
-        String key = buildCountryKey(MONTHLY_KEY, normalizeCountry(country), "");
-        return getTopFromZSet(trimTrailingColon(key), topN, "monthly");
+        String monthKey = YearMonth.now().format(MONTH_FORMATTER);
+        String key = buildCountryKey(MONTHLY_KEY, normalizeCountry(country), monthKey);
+        return getTopFromZSet(key, topN, "monthly");
     }
 
     /**
@@ -217,6 +199,20 @@ public class ImageHotRankService {
         log.info("日榜写入: key={}, imageId={}, country={}, date={}", key, imageId, country, today);
     }
 
+    private void recordWeekly(String imageId, String country, String weekKey) {
+        String key = buildCountryKey(WEEKLY_KEY, country, weekKey);
+        redisTemplate.opsForZSet().incrementScore(key, imageId, 1);
+        redisTemplate.expire(key, WEEKLY_HISTORY_TTL_DAYS, TimeUnit.DAYS);
+        log.info("周榜写入: key={}, imageId={}, country={}, week={}", key, imageId, country, weekKey);
+    }
+
+    private void recordMonthly(String imageId, String country, String monthKey) {
+        String key = buildCountryKey(MONTHLY_KEY, country, monthKey);
+        redisTemplate.opsForZSet().incrementScore(key, imageId, 1);
+        redisTemplate.expire(key, MONTHLY_HISTORY_TTL_DAYS, TimeUnit.DAYS);
+        log.info("月榜写入: key={}, imageId={}, country={}, month={}", key, imageId, country, monthKey);
+    }
+
     private String normalizeCountry(String country) {
         if (country == null || country.isBlank()) {
             return "all";
@@ -253,14 +249,11 @@ public class ImageHotRankService {
         }
     }
 
-    /**
-     * 获取当前周的 Key（ISO 8601 周标准）
-     */
-    private String trimTrailingColon(String key) {
-        if (key.endsWith(":")) {
-            return key.substring(0, key.length() - 1);
-        }
-        return key;
+    private String getIsoWeekKey(LocalDate date) {
+        WeekFields weekFields = WeekFields.ISO;
+        int week = date.get(weekFields.weekOfWeekBasedYear());
+        int year = date.get(weekFields.weekBasedYear());
+        return String.format("%d-W%02d", year, week);
     }
 
     /**

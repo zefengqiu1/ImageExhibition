@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * 图片浏览事件生产者
- * 将浏览事件发送到 Kafka，供 Flink 消费
+ * 将浏览事件发送到 Kafka，供异步消费
  */
 @Slf4j
 @Service
