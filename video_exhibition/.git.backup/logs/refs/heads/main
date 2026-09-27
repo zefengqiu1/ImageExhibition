@@ -1,0 +1,11 @@
+0000000000000000000000000000000000000000 653d4dfa351745c70dd78f098df9a175cbf2afee zefeng qiu <zefengqiu@unknownee20308adfe9.attlocal.net> 1763966116 -0800	clone: from https://github.com/zefengqiu1/lsp_front.git
+653d4dfa351745c70dd78f098df9a175cbf2afee 159bb34222fc1a6026241cf0a482552b79418542 zefeng qiu <zefengqiu@Mac.attlocal.net> 1768821031 -0800	commit: add ranking
+159bb34222fc1a6026241cf0a482552b79418542 eb7cef2d2cec701d8e5ca3336d5e3952d76e8303 zefeng qiu <zefengqiu@Mac.attlocal.net> 1768891701 -0800	commit: upgrade imagedetail& consistent model across searchlist,display and rank panel
+eb7cef2d2cec701d8e5ca3336d5e3952d76e8303 451dfe4420be753932cdd3244f626a5dc4ccfe27 zefeng qiu <zefengqiu@Mac.attlocal.net> 1769279431 -0800	commit: add user behavior tracking for analyis
+451dfe4420be753932cdd3244f626a5dc4ccfe27 502cdbba8df1a9162009daac5a4c8a4a788790a1 zefeng qiu <zefengqiu@Mac.attlocal.net> 1769498721 -0800	commit: save page status in browser storage
+502cdbba8df1a9162009daac5a4c8a4a788790a1 62be3cf2f96013a0f46da44012c1104cac6d53d1 zefeng qiu <zefengqiu@zefengs-MacBook-Air.local> 1770675607 -0800	commit: add data anlysis part
+62be3cf2f96013a0f46da44012c1104cac6d53d1 2d0de6453c750a8a80c2ec704708458ac05a22ff zefeng qiu <zefengqiu@Mac.attlocal.net> 1770692875 -0800	commit: refactor whole code
+2d0de6453c750a8a80c2ec704708458ac05a22ff ad1cb4885c0ec37e1a9385b1e5397c000f90a194 zefeng qiu <zefengqiu@Mac.attlocal.net> 1770888705 -0800	commit: ranking improvement
+ad1cb4885c0ec37e1a9385b1e5397c000f90a194 21342d99c4432ab29fb2b2c86e29659730cba105 zefeng qiu <zefengqiu@Mac.attlocal.net> 1770893650 -0800	commit: optimize the search list
+21342d99c4432ab29fb2b2c86e29659730cba105 92fbd2edb988d85e65bcd0c7ccfe20399fe57c31 zefeng qiu <zefengqiu@Mac.attwifi.manager> 1770946318 -0800	commit: fix viewDuration
+92fbd2edb988d85e65bcd0c7ccfe20399fe57c31 49751080ecd47ea04ce0f8e3169bcf58377fa56c zefeng qiu <zefengqiu@zefengs-MacBook-Air.local> 1784759351 -0700	commit: remove path recording

@@ -1,0 +1,108 @@
+.labelsection {
+  padding: 1rem;
+  background: #0f1120;
+}
+
+.panel {
+  padding: 1rem 1.1rem;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(24, 27, 48, 0.98), rgba(17, 19, 38, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+  display: grid;
+  gap: 1rem;
+}
+
+.themeTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.themeTab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 5.5rem;
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  text-decoration: none;
+  color: #d3d8e7;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.themeTab:hover {
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.themeTabActive {
+  background: linear-gradient(135deg, #18b7ff, #1e9df0);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.sectionRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.groupLink {
+  flex: 0 0 auto;
+  text-decoration: none;
+}
+
+.groupTag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 6.6rem;
+  padding: 0.7rem 0.95rem;
+  border-radius: 2px;
+  background: linear-gradient(135deg, #18b7ff, #1e9df0);
+  color: #fff;
+  font-size: 0.95rem;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: 0 10px 18px rgba(24, 183, 255, 0.24);
+}
+
+.optionWrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 1rem;
+  padding-top: 0.3rem;
+}
+
+.optionItem {
+  color: #b5bdd0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  text-decoration: none;
+  padding: 0.15rem 0;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.optionItem:hover {
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.active {
+  color: #37c2ff;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .sectionRow {
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .groupTag {
+    width: 100%;
+  }
+}

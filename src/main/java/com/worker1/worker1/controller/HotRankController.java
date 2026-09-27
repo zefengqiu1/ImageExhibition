@@ -1,45 +1,44 @@
 package com.worker1.worker1.controller;
 
-import com.worker1.worker1.service.DbImageUrlService;
-import com.worker1.worker1.service.ImageHotRankService;
-import com.worker1.worker1.service.ImageHotRankService.HotImage;
-import com.worker1.worker1.store.model.DbImageUrl;
+import com.worker1.worker1.service.VideoDataService;
+import com.worker1.worker1.service.VideoHotRankService;
+import com.worker1.worker1.service.VideoHotRankService.HotVideo;
+import com.worker1.worker1.store.model.VideoData;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 图片热度排行榜控制器
- */
 @RestController
-@RequestMapping("/api/images/rank")
+@RequestMapping("/api/videos/rank")
 @CrossOrigin("*")
 @Slf4j
+@ConditionalOnProperty(name = "feature.redis.enabled", havingValue = "true", matchIfMissing = true)
 public class HotRankController {
 
     @Autowired
-    private ImageHotRankService hotRankService;
+    private VideoHotRankService hotRankService;
 
     @Autowired
-    private DbImageUrlService dbImageUrlService;
+    private VideoDataService videoDataService;
 
-    /**
-     * 获取实时热榜（过去5分钟）
-     */
     @GetMapping("/realtime")
     public ResponseEntity<RankResponse> getRealtimeRank(
             @RequestParam(defaultValue = "10") int top,
-            @RequestParam(defaultValue = "all") String country) {
+            @RequestParam(defaultValue = "all") String category) {
         try {
-            List<HotImage> hotImages = hotRankService.getRealtimeTop(top, country);
-            List<RankItem> items = enrichRankData(hotImages);
+            List<RankItem> items = enrichRankData(hotRankService.getRealtimeTop(top, category));
 
             return ResponseEntity.ok(RankResponse.builder()
                     .success(true)
@@ -49,24 +48,17 @@ public class HotRankController {
                     .total(items.size())
                     .build());
         } catch (Exception e) {
-            log.error("获取实时热榜失败", e);
-            return ResponseEntity.ok(RankResponse.builder()
-                    .success(false)
-                    .message("获取失败: " + e.getMessage())
-                    .build());
+            log.error("获取视频实时热榜失败", e);
+            return buildFailureResponse(e);
         }
     }
 
-    /**
-     * 获取日榜
-     */
     @GetMapping("/daily")
     public ResponseEntity<RankResponse> getDailyRank(
             @RequestParam(defaultValue = "10") int top,
-            @RequestParam(defaultValue = "all") String country) {
+            @RequestParam(defaultValue = "all") String category) {
         try {
-            List<HotImage> hotImages = hotRankService.getDailyTop(top, country);
-            List<RankItem> items = enrichRankData(hotImages);
+            List<RankItem> items = enrichRankData(hotRankService.getDailyTop(top, category));
 
             return ResponseEntity.ok(RankResponse.builder()
                     .success(true)
@@ -76,24 +68,17 @@ public class HotRankController {
                     .total(items.size())
                     .build());
         } catch (Exception e) {
-            log.error("获取日榜失败", e);
-            return ResponseEntity.ok(RankResponse.builder()
-                    .success(false)
-                    .message("获取失败: " + e.getMessage())
-                    .build());
+            log.error("获取视频日榜失败", e);
+            return buildFailureResponse(e);
         }
     }
 
-    /**
-     * 获取周榜
-     */
     @GetMapping("/weekly")
     public ResponseEntity<RankResponse> getWeeklyRank(
             @RequestParam(defaultValue = "10") int top,
-            @RequestParam(defaultValue = "all") String country) {
+            @RequestParam(defaultValue = "all") String category) {
         try {
-            List<HotImage> hotImages = hotRankService.getWeeklyTop(top, country);
-            List<RankItem> items = enrichRankData(hotImages);
+            List<RankItem> items = enrichRankData(hotRankService.getWeeklyTop(top, category));
 
             return ResponseEntity.ok(RankResponse.builder()
                     .success(true)
@@ -103,25 +88,18 @@ public class HotRankController {
                     .total(items.size())
                     .build());
         } catch (Exception e) {
-            log.error("获取周榜失败", e);
-            return ResponseEntity.ok(RankResponse.builder()
-                    .success(false)
-                    .message("获取失败: " + e.getMessage())
-                    .build());
+            log.error("获取视频周榜失败", e);
+            return buildFailureResponse(e);
         }
     }
 
-    /**
-     * 获取历史周榜
-     */
     @GetMapping("/weekly/history")
     public ResponseEntity<RankResponse> getWeeklyHistoryRank(
             @RequestParam(defaultValue = "10") int top,
-            @RequestParam(defaultValue = "all") String country,
+            @RequestParam(defaultValue = "all") String category,
             @RequestParam String week) {
         try {
-            List<HotImage> hotImages = hotRankService.getWeeklyTopByWeek(top, country, week);
-            List<RankItem> items = enrichRankData(hotImages);
+            List<RankItem> items = enrichRankData(hotRankService.getWeeklyTopByWeek(top, category, week));
 
             return ResponseEntity.ok(RankResponse.builder()
                     .success(true)
@@ -131,24 +109,17 @@ public class HotRankController {
                     .total(items.size())
                     .build());
         } catch (Exception e) {
-            log.error("获取历史周榜失败: week={}", week, e);
-            return ResponseEntity.ok(RankResponse.builder()
-                    .success(false)
-                    .message("获取失败: " + e.getMessage())
-                    .build());
+            log.error("获取视频历史周榜失败: week={}", week, e);
+            return buildFailureResponse(e);
         }
     }
 
-    /**
-     * 获取月榜
-     */
     @GetMapping("/monthly")
     public ResponseEntity<RankResponse> getMonthlyRank(
             @RequestParam(defaultValue = "10") int top,
-            @RequestParam(defaultValue = "all") String country) {
+            @RequestParam(defaultValue = "all") String category) {
         try {
-            List<HotImage> hotImages = hotRankService.getMonthlyTop(top, country);
-            List<RankItem> items = enrichRankData(hotImages);
+            List<RankItem> items = enrichRankData(hotRankService.getMonthlyTop(top, category));
 
             return ResponseEntity.ok(RankResponse.builder()
                     .success(true)
@@ -158,25 +129,18 @@ public class HotRankController {
                     .total(items.size())
                     .build());
         } catch (Exception e) {
-            log.error("获取月榜失败", e);
-            return ResponseEntity.ok(RankResponse.builder()
-                    .success(false)
-                    .message("获取失败: " + e.getMessage())
-                    .build());
+            log.error("获取视频月榜失败", e);
+            return buildFailureResponse(e);
         }
     }
 
-    /**
-     * 获取历史月榜
-     */
     @GetMapping("/monthly/history")
     public ResponseEntity<RankResponse> getMonthlyHistoryRank(
             @RequestParam(defaultValue = "10") int top,
-            @RequestParam(defaultValue = "all") String country,
+            @RequestParam(defaultValue = "all") String category,
             @RequestParam String month) {
         try {
-            List<HotImage> hotImages = hotRankService.getMonthlyTopByMonth(top, country, month);
-            List<RankItem> items = enrichRankData(hotImages);
+            List<RankItem> items = enrichRankData(hotRankService.getMonthlyTopByMonth(top, category, month));
 
             return ResponseEntity.ok(RankResponse.builder()
                     .success(true)
@@ -186,71 +150,54 @@ public class HotRankController {
                     .total(items.size())
                     .build());
         } catch (Exception e) {
-            log.error("获取历史月榜失败: month={}", month, e);
-            return ResponseEntity.ok(RankResponse.builder()
-                    .success(false)
-                    .message("获取失败: " + e.getMessage())
-                    .build());
+            log.error("获取视频历史月榜失败: month={}", month, e);
+            return buildFailureResponse(e);
         }
     }
 
-    /**
-     * 获取所有榜单（一次性返回）
-     */
     @GetMapping("/all")
     public ResponseEntity<Map<String, Object>> getAllRanks(
             @RequestParam(defaultValue = "10") int top,
-            @RequestParam(defaultValue = "all") String country) {
+            @RequestParam(defaultValue = "all") String category) {
         try {
             Map<String, Object> result = new HashMap<>();
             result.put("success", true);
-            result.put("realtime", enrichRankData(hotRankService.getRealtimeTop(top, country)));
-            result.put("daily", enrichRankData(hotRankService.getDailyTop(top, country)));
-            result.put("weekly", enrichRankData(hotRankService.getWeeklyTop(top, country)));
-            result.put("monthly", enrichRankData(hotRankService.getMonthlyTop(top, country)));
+            result.put("realtime", enrichRankData(hotRankService.getRealtimeTop(top, category)));
+            result.put("daily", enrichRankData(hotRankService.getDailyTop(top, category)));
+            result.put("weekly", enrichRankData(hotRankService.getWeeklyTop(top, category)));
+            result.put("monthly", enrichRankData(hotRankService.getMonthlyTop(top, category)));
 
             return ResponseEntity.ok(result);
         } catch (Exception e) {
-            log.error("获取所有榜单失败", e);
+            log.error("获取所有视频榜单失败", e);
             return ResponseEntity.ok(Map.of(
                     "success", false,
-                    "message", "获取失败: " + e.getMessage()
-            ));
+                    "message", "获取失败: " + e.getMessage()));
         }
     }
 
-    /**
-     * 补充图片详细信息
-     * ⚠️ 关键修改：imageId 改为使用 title 字段
-     */
-    private List<RankItem> enrichRankData(List<HotImage> hotImages) {
+    private List<RankItem> enrichRankData(List<HotVideo> hotVideos) {
         List<RankItem> items = new ArrayList<>();
 
-        for (int i = 0; i < hotImages.size(); i++) {
-            HotImage hot = hotImages.get(i);
+        for (int i = 0; i < hotVideos.size(); i++) {
+            HotVideo hot = hotVideos.get(i);
             RankItem item = new RankItem();
             item.setRank(i + 1);
-            item.setImageId(hot.getImageId());
+            item.setVideoId(hot.getVideoId());
             item.setViewCount(hot.getViewCount());
 
-            // 从数据库获取图片详细信息
             try {
-                // ✅ 关键：imageId 实际上就是 title（因为 @Id 是 title）
-                DbImageUrl dbImage = dbImageUrlService.getDbImageUrlById(hot.getImageId());
-                if (dbImage != null) {
-                    item.setTitle(dbImage.getTitle());  // ✅ 设置 title 供前端使用
-                    item.setWebsite(dbImage.getWebsite());
-                    item.setCountry(dbImage.getCountry());
-
-                    // 只返回第一张图片URL（缩略图）
-                    if (dbImage.getImageUrl() != null && !dbImage.getImageUrl().isEmpty()) {
-                        item.setThumbnail(dbImage.getImageUrl().get(0));
-                    }
-
-                    item.setLabels(dbImage.getLabels());
+                VideoData video = videoDataService.getPublicById(hot.getVideoId());
+                if (video != null) {
+                    item.setTitle(video.getTitle());
+                    item.setDescription(video.getDescription());
+                    item.setImageUrl(video.getImageUrl());
+                    item.setCategory(video.getCategory());
+                    item.setType(video.getType());
+                    item.setStatus(video.getStatus());
                 }
             } catch (Exception e) {
-                log.warn("获取图片详情失败: imageId={}", hot.getImageId(), e);
+                log.warn("获取视频热榜详情失败: videoId={}", hot.getVideoId(), e);
             }
 
             items.add(item);
@@ -259,11 +206,17 @@ public class HotRankController {
         return items;
     }
 
-    // DTO 类
+    private ResponseEntity<RankResponse> buildFailureResponse(Exception e) {
+        return ResponseEntity.ok(RankResponse.builder()
+                .success(false)
+                .message("获取失败: " + e.getMessage())
+                .build());
+    }
+
     @Data
     public static class ViewRequest {
-        private String imageId;
-        private String country;
+        private String videoId;
+        private String category;
     }
 
     @Data
@@ -280,12 +233,13 @@ public class HotRankController {
     @Data
     public static class RankItem {
         private Integer rank;
-        private String imageId;      // imageId（实际是 title）
-        private String title;        // ✅ 明确的 title 字段供前端使用
-        private String website;
-        private String country;
-        private String thumbnail;
-        private List<String> labels;
+        private String videoId;
+        private String title;
+        private String description;
+        private String imageUrl;
+        private String category;
+        private String type;
+        private String status;
         private Long viewCount;
     }
 }

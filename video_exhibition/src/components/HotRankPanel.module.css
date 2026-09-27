@@ -1,0 +1,138 @@
+/* HotRankPanel.module.css */
+
+.hotRankPanel {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.realtimeHint {
+  margin: -8px 0 16px;
+  font-size: 13px;
+  color: #666;
+}
+
+.tabButton {
+  padding: 10px 20px;
+  border: none;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 6px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.tabButton:hover,
+.tabButton:focus {
+  background-color: #007bff;
+  color: white;
+  outline: none;
+}
+
+.tabButtonActive {
+  background-color: #007bff;
+  color: white;
+}
+
+.rankList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.rankItem {
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  position: relative;
+}
+
+.rankItem:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+.rankImage {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.rankNumber {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background-color: rgba(0,0,0,0.6);
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.info {
+  padding: 10px;
+}
+
+.infoTitle {
+  font-size: 16px;
+  margin: 0 0 5px;
+  line-height: 1.2;
+  height: 40px;
+  overflow: hidden;
+}
+
+.infoView {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+/* --- 响应式调整 --- */
+@media (max-width: 768px) {
+  .rankList {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 15px;
+  }
+
+  .rankImage {
+    height: 140px;
+  }
+
+  .tabButton {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .rankList {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .rankImage {
+    height: 200px;
+  }
+
+  .tabs {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .tabButton {
+    width: 100%;
+    text-align: center;
+  }
+}

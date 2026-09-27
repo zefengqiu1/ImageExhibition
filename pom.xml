@@ -14,8 +14,6 @@
     <groupId>com.worker1</groupId>
     <artifactId>imageExhibition</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>worker1</name>
-    <description>worker1</description>
     <url/>
     <licenses>
         <license/>

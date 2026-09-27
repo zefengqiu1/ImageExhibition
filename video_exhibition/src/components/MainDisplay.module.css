@@ -1,0 +1,72 @@
+.maindisplay {
+  font-family: Arial, sans-serif;
+  background-color: black;
+  color: white;
+  min-height: 100vh;
+}
+
+.maindisplay ul {
+  display: flex;
+  align-items: center;
+  /* gap: 1rem; */
+  list-style: none;
+}
+
+.filterbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* 垂直居中 */
+  /* padding: 0.5rem 1rem; */
+  /* 你截图那种深色背景 */
+  color: white;
+  padding: 1rem;
+}
+
+.filterbar ul {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  list-style: none;
+}
+
+.filterbar li {
+  background-color: #1d1d1d;
+  padding: 0.5rem;
+}
+
+.order {
+  /* margin: 5px; */
+  padding: 10px;
+  background-color: gray;
+}
+
+.order:hover {
+  cursor: pointer;
+}
+
+.imageGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  /* 默认每行显示 5 张图片 */
+  gap: 10px;
+  /* 图片之间的间隙 */
+}
+
+.imageItem {
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .imageGrid {
+    grid-template-columns: repeat(3, 1fr);
+    /* 每行显示 3 张图片 */
+  }
+}
+
+@media (max-width: 480px) {
+  .imageGrid {
+    grid-template-columns: repeat(2, 1fr);
+    /* 每行显示 2 张图片 */
+  }
+}

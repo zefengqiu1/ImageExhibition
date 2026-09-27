@@ -1,0 +1,399 @@
+.page {
+  min-height: 100vh;
+  padding: 28px;
+  background: #f5f7fb;
+  color: #172033;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  margin: 4px 0 0;
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.filters,
+.tableShell,
+.modal {
+  border: 1px solid #dce3ee;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(120px, 1fr)) auto;
+  gap: 12px;
+  align-items: end;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.filters label,
+.formGrid label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.filters input,
+.filters select,
+.formGrid input,
+.formGrid select,
+.formGrid textarea {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: #fff;
+  color: #111827;
+  font: inherit;
+}
+
+.filters input,
+.filters select {
+  height: 38px;
+  padding: 0 10px;
+}
+
+.formGrid input,
+.formGrid select {
+  height: 40px;
+  padding: 0 10px;
+}
+
+.formGrid textarea {
+  padding: 10px;
+  resize: vertical;
+}
+
+.filters input:focus,
+.filters select:focus,
+.formGrid input:focus,
+.formGrid select:focus,
+.formGrid textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.filterActions,
+.modalActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.primaryButton,
+.secondaryButton,
+.ghostButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  border-radius: 6px;
+  padding: 0 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.primaryButton {
+  border: 1px solid #1d4ed8;
+  background: #2563eb;
+  color: #fff;
+}
+
+.primaryButton:hover {
+  background: #1d4ed8;
+}
+
+.secondaryButton {
+  border: 1px solid #d1d9e6;
+  background: #111827;
+  color: #fff;
+}
+
+.secondaryButton:hover {
+  background: #0f172a;
+}
+
+.ghostButton {
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #334155;
+}
+
+.ghostButton:hover {
+  border-color: #94a3b8;
+  background: #f8fafc;
+}
+
+.error {
+  margin-bottom: 16px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #fff1f2;
+  color: #be123c;
+  padding: 12px 14px;
+}
+
+.tableShell {
+  overflow: hidden;
+}
+
+.tableHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.tableHeader span {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.tableScroll {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  min-width: 1040px;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 13px 14px;
+  border-bottom: 1px solid #e5eaf2;
+  text-align: left;
+  vertical-align: middle;
+  font-size: 14px;
+}
+
+.table th {
+  background: #f8fafc;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.videoCell {
+  display: grid;
+  grid-template-columns: 76px minmax(180px, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+
+.videoCell strong {
+  display: -webkit-box;
+  max-width: 320px;
+  overflow: hidden;
+  color: #111827;
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.videoCell span,
+.metaStack span {
+  display: block;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.cover,
+.coverFallback {
+  width: 76px;
+  aspect-ratio: 16 / 10;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.coverFallback {
+  display: grid;
+  place-items: center;
+  background: #e2e8f0;
+  color: #64748b;
+}
+
+.metaStack {
+  min-width: 150px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  border-radius: 999px;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.pendingBadge {
+  background: #fff7ed;
+  color: #c2410c;
+}
+
+.approvedBadge,
+.publishedBadge {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.rejectedBadge,
+.offlineBadge {
+  background: #fff1f2;
+  color: #be123c;
+}
+
+.draftBadge,
+.neutralBadge {
+  background: #eef2ff;
+  color: #4338ca;
+}
+
+.rowActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 220px;
+}
+
+.rowActions button,
+.iconButton {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #d7deea;
+  border-radius: 6px;
+  background: #fff;
+  color: #334155;
+  cursor: pointer;
+}
+
+.rowActions button:hover,
+.iconButton:hover {
+  border-color: #94a3b8;
+  background: #f8fafc;
+}
+
+.rowActions .dangerIcon {
+  color: #dc2626;
+}
+
+.emptyCell {
+  height: 160px;
+  color: #64748b;
+  text-align: center !important;
+}
+
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.modal {
+  width: min(760px, 100%);
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 20px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.modalHeader h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.iconButton {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  padding: 18px 20px;
+}
+
+.wideField {
+  grid-column: 1 / -1;
+}
+
+.modalActions {
+  justify-content: flex-end;
+  padding: 16px 20px;
+  border-top: 1px solid #e2e8f0;
+}
+
+@media (max-width: 1100px) {
+  .filters {
+    grid-template-columns: repeat(3, minmax(140px, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .page {
+    padding: 18px 12px;
+  }
+
+  .header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .filters,
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .filterActions {
+    justify-content: stretch;
+  }
+
+  .filterActions button,
+  .header button {
+    flex: 1;
+  }
+}

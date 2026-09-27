@@ -1,0 +1,29 @@
+/* src/components/LabelRanking.module.css */
+.container {
+  padding: 15px;
+  background-color: #1c1d2e;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 430px;
+  color: #ffffff;
+}
+
+
+.rankItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  /* border-bottom: 1px solid #eee; */
+}
+
+.rank {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ff9800;
+}
+
+.label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ffffff;
+}

@@ -1,0 +1,70 @@
+/* src/pages/RankPage.module.css */
+.container {
+  display: flex;
+  flex-direction: column;
+  /* 垂直排列 Header、Section、Footer */
+  min-height: 100vh;
+  /* 占满整个视口高度 */
+}
+
+.navigation {
+  background-color: #3b5d77;
+  text-align: center;
+  color: white;
+}
+
+h1 {
+  background-color: #3b5d77;
+  text-align: center;
+  color: white;
+}
+
+.navigation li {
+  list-style: none;
+  display: inline-block;
+  padding: 1rem 0.5rem 1rem 0.5rem;
+  margin-left: 2rem;
+}
+
+.text {
+  text-decoration: none;
+  padding: 2rem;
+  color: white;
+}
+
+.section {
+  flex: 1;
+  /* 让 Section 自动填满中间剩余空间 */
+  background-color: #090b20;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 2rem;
+}
+
+/*需要容器自身的宽高撑开*/
+.inline {
+  margin-top: 1rem;
+  display: inline-block;
+  margin-left: 3rem;
+}
+
+.loader {
+  font-size: 1.5rem;
+  color: #888;
+  text-align: center;
+}
+
+.error {
+  color: red;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.active {
+  font-weight: bold;
+  background-color: #284252;
+  /* padding: 0.4rem; */
+  /* 设置为蓝色，或者任何你想要的颜色 */
+}

@@ -5,25 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.CompoundIndex;
-import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.List;
 
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "videoData")
-@CompoundIndexes({
-        @CompoundIndex(name = "category_filters_idx", def = "{'category': 1, 'type': 1, 'region': 1, 'language': 1, 'year': 1, 'quality': 1, 'status': 1}"),
-        @CompoundIndex(name = "category_created_at_idx", def = "{'category': 1, 'createdAt': -1}")
-})
 public class VideoData {
     @Id
     private String id;
+    private String title;
     private String description;
     private String imageUrl;
     @Indexed

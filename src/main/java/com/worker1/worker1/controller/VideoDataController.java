@@ -36,25 +36,20 @@ public class VideoDataController {
             @RequestParam(name = "language", required = false) String language,
             @RequestParam(name = "year", required = false) String year,
             @RequestParam(name = "quality", required = false) String quality,
-        @RequestParam(name = "status", required = false) String status) {
+            @RequestParam(name = "status", required = false) String status) {
         log.info(category);
         Pageable pageable = buildPageable(page, size, sortBy, direction);
-        Page<VideoData> dataPage = videoDataService.search(category, type, region, language, year, quality, status, pageable);
+        Page<VideoData> dataPage = videoDataService.searchPublic(category, type, region, language, year, quality, status, pageable);
         return new ResponseEntity<>(buildListResponse(dataPage), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<VideoData> getDataById(@PathVariable String id) {
-        VideoData data = videoDataService.getById(id);
+        VideoData data = videoDataService.getPublicById(id);
         if (data == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(data, HttpStatus.OK);
-    }
-
-    @PostMapping({"/video", "/api/videos"})
-    public ResponseEntity<VideoData> createData(@RequestBody VideoData data) {
-        return new ResponseEntity<>(videoDataService.create(data), HttpStatus.CREATED);
     }
 
     private Pageable buildPageable(Integer page, Integer size, String sortBy, String direction) {

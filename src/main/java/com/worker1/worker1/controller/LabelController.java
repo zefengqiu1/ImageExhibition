@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -23,7 +24,7 @@ import java.util.Set;
 @CrossOrigin("*")
 public class LabelController {
 
-    @Autowired
+    @Autowired(required = false)
     private StringRedisTemplate redisTemplate;
 
     @Autowired
@@ -37,6 +38,9 @@ public class LabelController {
 
     @GetMapping("/labels/rankings")
     public ResponseEntity<List<String>> getHotLabels() {
+        if (redisTemplate == null) {
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
+        }
         Set<String> labelSet = redisTemplate.opsForZSet()
                 .reverseRange("label_rank", 0, -1);
 
@@ -44,4 +48,3 @@ public class LabelController {
         return new ResponseEntity<>(labelList, HttpStatus.OK);
     }
 }
-

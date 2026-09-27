@@ -1,0 +1,671 @@
+/* AnalyticsPage.module.css */
+
+.container {
+  min-height: 100vh;
+  background-color: #0a0b0f;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  width: 100%;
+}
+
+/* 加载状态 */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 20px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top: 4px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 页面标题 */
+.pageHeader {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.headerLeft {
+  flex: 1;
+  min-width: 300px;
+}
+
+.pageHeader h1 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: #ffffff;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: #9ca3af;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.mockBadge {
+  display: inline-block;
+  padding: 2px 8px;
+  background: rgba(251, 191, 36, 0.2);
+  border: 1px solid #fbbf24;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #fbbf24;
+}
+
+/* 日期选择器 */
+.dateSelector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.dateSelector label {
+  color: #9ca3af;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.dateInput {
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dateInput:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.dateInput:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Chrome/Safari 日期选择器样式 */
+.dateInput::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+.todayButton {
+  padding: 8px 16px;
+  background: rgba(59, 130, 246, 0.2);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 6px;
+  color: #60a5fa;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.todayButton:hover {
+  background: rgba(59, 130, 246, 0.3);
+  border-color: rgba(59, 130, 246, 0.5);
+  transform: translateY(-1px);
+}
+
+.todayButton:active {
+  transform: translateY(0);
+}
+
+/* 核心指标网格 */
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.metricCard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.metricCard:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.metricIcon {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.metricContent {
+  flex: 1;
+}
+
+.metricLabel {
+  font-size: 14px;
+  color: #9ca3af;
+  margin-bottom: 4px;
+}
+
+.metricValue {
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* 区块 */
+.section {
+  margin-bottom: 40px;
+  padding: 25px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.sectionHeader h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+  color: #ffffff;
+}
+
+/* 时间选择器 */
+.periodSelector {
+  display: flex;
+  gap: 8px;
+}
+
+.periodSelector button {
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.periodSelector button:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.periodSelector button.active {
+  background: #3b82f6;
+  border-color: #3b82f6;
+}
+
+/* 简易图表 */
+.chartContainer {
+  padding: 20px 0;
+}
+
+.simpleChart {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 250px;
+  padding: 10px;
+}
+
+.chartBar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+}
+
+.chartBarFill {
+  width: 100%;
+  background: linear-gradient(to top, #3b82f6, #60a5fa);
+  border-radius: 4px 4px 0 0;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 5px;
+  min-height: 30px;
+  transition: all 0.3s ease;
+}
+
+.chartBarFill:hover {
+  background: linear-gradient(to top, #2563eb, #3b82f6);
+  transform: scaleY(1.05);
+}
+
+.chartBarValue {
+  font-size: 11px;
+  color: white;
+  font-weight: 600;
+}
+
+.chartBarLabel {
+  font-size: 11px;
+  color: #9ca3af;
+  writing-mode: horizontal-tb;
+  text-align: center;
+}
+
+/* 表格 */
+.tableContainer {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table thead {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.table th {
+  padding: 12px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  color: #9ca3af;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.table td {
+  padding: 12px;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* 可点击的表格行 */
+.clickableRow {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.clickableRow:hover {
+  background: rgba(59, 130, 246, 0.1) !important;
+  transform: translateX(4px);
+}
+
+.clickableRow:active {
+  transform: translateX(2px);
+  background: rgba(59, 130, 246, 0.15) !important;
+}
+
+.rank {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  text-align: center;
+  line-height: 30px;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.titleCell {
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #60a5fa;
+  font-weight: 500;
+}
+
+.clickableRow:hover .titleCell {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+.countryBadge {
+  display: inline-block;
+  padding: 4px 10px;
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 12px;
+  font-size: 12px;
+  color: #10b981;
+}
+
+/* 关键词网格 */
+.keywordGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.keywordCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.keywordCard:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+.keywordRank {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: rgba(139, 92, 246, 0.2);
+  color: #a78bfa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.keywordContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.keywordName {
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.keywordStats {
+  display: flex;
+  gap: 10px;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* 地区网格 */
+.countryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.countryCard {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.countryCard:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+.countryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.countryHeader h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #ffffff;
+}
+
+.countryPv {
+  font-size: 20px;
+  font-weight: 700;
+  color: #3b82f6;
+}
+
+.countryStats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.countryStat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.countryStatLabel {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.countryStatValue {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* 设备分布 */
+.deviceDistribution {
+  padding: 20px 0;
+}
+
+.deviceBar {
+  display: flex;
+  height: 60px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.deviceBarMobile {
+  background: linear-gradient(to right, #ec4899, #f472b6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.deviceBarMobile:hover {
+  filter: brightness(1.1);
+}
+
+.deviceBarDesktop {
+  background: linear-gradient(to right, #3b82f6, #60a5fa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.deviceBarDesktop:hover {
+  filter: brightness(1.1);
+}
+
+/* 响应式设计 */
+@media (max-width: 1024px) {
+  .metricsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .keywordGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pageHeader {
+    flex-direction: column;
+  }
+
+  .dateSelector {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: 15px;
+  }
+
+  .pageHeader h1 {
+    font-size: 24px;
+  }
+
+  .metricsGrid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .section {
+    padding: 15px;
+  }
+
+  .sectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .tableContainer {
+    overflow-x: scroll;
+  }
+
+  .table {
+    font-size: 12px;
+  }
+
+  .keywordGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .countryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .simpleChart {
+    height: 200px;
+  }
+
+  .chartBarLabel {
+    font-size: 9px;
+  }
+
+  .dateSelector {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .dateInput,
+  .todayButton {
+    flex: 1;
+    min-width: calc(50% - 4px);
+  }
+}
+
+@media (max-width: 480px) {
+  .metricValue {
+    font-size: 22px;
+  }
+
+  .pageHeader h1 {
+    font-size: 20px;
+  }
+
+  .sectionHeader h2 {
+    font-size: 18px;
+  }
+
+  .dateSelector {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dateInput,
+  .todayButton {
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .dateSelector label {
+    text-align: center;
+  }
+}

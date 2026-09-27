@@ -7,7 +7,11 @@ import co.elastic.clients.transport.rest_client.RestClientTransport;
 import org.elasticsearch.client.RestClient;
 import org.apache.http.HttpHost;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
+@Configuration
+@ConditionalOnProperty(name = "feature.elasticsearch.enabled", havingValue = "true", matchIfMissing = true)
 public class ElasticsearchConfig {
 
     @Bean

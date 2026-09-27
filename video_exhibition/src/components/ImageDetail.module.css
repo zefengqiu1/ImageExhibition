@@ -1,0 +1,283 @@
+.container {
+  min-height: 100vh;
+  padding: 20px;
+  background:
+    radial-gradient(circle at top, rgba(56, 68, 120, 0.24), transparent 28%),
+    linear-gradient(180deg, #090b1c 0%, #080915 100%);
+  color: #f4f7ff;
+}
+
+.topBar,
+.layout {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.7rem 1rem;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.backButton:hover {
+  transform: translateX(-2px);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.topMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #c4cbdf;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(48, 171, 255, 0.16);
+  color: #6bc9ff;
+  font-size: 0.85rem;
+}
+
+.subtle {
+  color: #99a2bc;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 1.2rem;
+}
+
+.main {
+  display: grid;
+  gap: 1rem;
+}
+
+.playerCard,
+.infoCard,
+.sideCard {
+  background: rgba(16, 18, 33, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
+}
+
+.playerCard {
+  overflow: hidden;
+}
+
+.playerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.videoState {
+  color: #f2b36f;
+  white-space: nowrap;
+}
+
+.playerFrame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #03040a;
+}
+
+.cover,
+.coverFallback {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.coverFallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  color: #8e97b6;
+}
+
+.playOverlay {
+  position: absolute;
+  inset: auto 1rem 1rem auto;
+}
+
+.playButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.7rem 1rem;
+  background: linear-gradient(135deg, #2eb7ff, #1f8bf0);
+  color: #fff;
+  cursor: pointer;
+}
+
+.actionRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  padding: 0.95rem 1.1rem 1.15rem;
+  color: #c8d0e8;
+}
+
+.actionItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.infoCard,
+.sideCard {
+  padding: 1rem 1.1rem;
+}
+
+.sectionTitle {
+  margin: 0 0 0.9rem;
+  font-size: 1.05rem;
+}
+
+.tagGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.tagChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(61, 87, 174, 0.16);
+  border: 1px solid rgba(132, 156, 241, 0.18);
+  color: #d8e1ff;
+}
+
+.summary {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.summaryTitle {
+  margin: 0 0 0.65rem;
+  font-size: 0.95rem;
+  color: #b9c4e3;
+}
+
+.summaryText {
+  margin: 0;
+  line-height: 1.8;
+  color: #d3dbf1;
+}
+
+.metaList {
+  margin: 0;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.metaList div {
+  display: grid;
+  gap: 0.2rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.metaList dt {
+  color: #8f98b5;
+  font-size: 0.85rem;
+}
+
+.metaList dd {
+  margin: 0;
+  color: #edf1ff;
+  font-weight: 600;
+}
+
+.loading,
+.error {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: #dce3ff;
+}
+
+.spinner {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #2eb7ff;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 1024px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 14px;
+  }
+
+  .topBar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .playerHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .title {
+    font-size: 1.2rem;
+  }
+}

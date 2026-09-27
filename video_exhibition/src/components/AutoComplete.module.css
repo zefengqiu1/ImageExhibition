@@ -1,0 +1,38 @@
+.container {
+  display: flex;
+  gap: 10px;
+  width: 500px;
+  margin: 0 auto;
+}
+
+.inputWrapper {
+  position: relative;
+  flex: 1;
+}
+
+.inputWrapper input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.inputWrapper input:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+button {
+  padding: 12px 20px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}

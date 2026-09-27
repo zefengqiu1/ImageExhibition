@@ -1,9 +1,10 @@
 package com.worker1.worker1.controller;
 
 import com.worker1.worker1.service.BatchIndexService;
-import com.worker1.worker1.service.ImageSearchService;
+import com.worker1.worker1.service.VideoSearchService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ import java.util.concurrent.CompletableFuture;
 @RequestMapping("/api/admin/elasticsearch")
 @CrossOrigin("*")
 @Slf4j
+@ConditionalOnProperty(name = "feature.elasticsearch.enabled", havingValue = "true", matchIfMissing = true)
 public class ElasticsearchAdminController {
 
     @Autowired
@@ -25,7 +27,7 @@ public class ElasticsearchAdminController {
 
     private HashMap<Integer,Integer> map;
     @Autowired
-    private ImageSearchService imageSearchService;
+    private VideoSearchService videoSearchService;
 
     /**
      * 重建索引
@@ -64,7 +66,7 @@ public class ElasticsearchAdminController {
         try {
             log.warn("收到删除索引请求");
 
-            boolean success = imageSearchService.deleteAllIndexes();
+            boolean success = videoSearchService.deleteAllIndexes();
 
             return ResponseEntity.ok(Map.of(
                     "success", success,
@@ -128,7 +130,7 @@ public class ElasticsearchAdminController {
     @GetMapping("/duplicates")
     public ResponseEntity<Map<String, Object>> findDuplicates() {
         try {
-            Map<String, Long> duplicates = imageSearchService.findDuplicateTitles();
+            Map<String, Long> duplicates = videoSearchService.findDuplicateTitles();
 
             return ResponseEntity.ok(Map.of(
                     "success", true,
@@ -175,7 +177,7 @@ public class ElasticsearchAdminController {
     @GetMapping("/health")
     public ResponseEntity<Map<String, Object>> healthCheck() {
         try {
-            long totalCount = imageSearchService.getTotalRecordCount();
+            long totalCount = videoSearchService.getTotalRecordCount();
 
             return ResponseEntity.ok(Map.of(
                     "status", "UP",

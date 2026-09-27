@@ -1,7 +1,7 @@
 package com.worker1.worker1.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.worker1.worker1.service.ImageHotRankService;
+import com.worker1.worker1.service.VideoHotRankService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +29,12 @@ public class AnalyticsController {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
-    private ImageHotRankService hotRankService;
+    @Autowired(required = false)
+    private VideoHotRankService hotRankService;
 
     // Kafka Topics
 //    private static final String PAGE_VIEW_TOPIC = "page-view-events";
-    private static final String IMAGE_VIEW_TOPIC = "image-view-events";
+    private static final String VIDEO_VIEW_TOPIC = "video-view-events";
     private static final String SEARCH_TOPIC = "search-events";
 
     /**
@@ -60,7 +60,9 @@ public class AnalyticsController {
                     Map<String, Object> fullEvent = new HashMap<>();
                     fullEvent.put("userInfo", request.getUserInfo());
                     fullEvent.put("event", event);
-                    hotRankService.recordView(event.getImageId(), event.getCountry());
+                    if ("video_view".equals(event.getEventType()) && hotRankService != null) {
+                        hotRankService.recordView(event.getVideoId(), event.getCategory());
+                    }
 
                     String eventJson = objectMapper.writeValueAsString(fullEvent);
 
@@ -105,7 +107,7 @@ public class AnalyticsController {
      */
     private String getTopicByEventType(String eventType) {
         return switch (eventType) {
-            case "image_view" -> IMAGE_VIEW_TOPIC;
+            case "video_view" -> VIDEO_VIEW_TOPIC;
             case "search" -> SEARCH_TOPIC;
             default -> "unknown-events";
         };
@@ -139,11 +141,10 @@ public class AnalyticsController {
         private String pageUrl;
         private String referrer;
 
-        // image_view 字段
-        private String imageId;
-        private String imageTitle;
-        private String country;
-        private List<String> labels;
+        // video_view 字段
+        private String videoId;
+        private String videoTitle;
+        private String category;
         private Integer viewDuration;
         private Double scrollDepth;
 
