@@ -34,10 +34,13 @@ pipeline {
 
         stage('Build Frontend') {
             steps {
-                dir('video_exhibition') {
-                    sh 'npm ci'
-                    sh 'npm run build'
-                }
+                sh '''
+                    docker run --rm \
+                        -v "$PWD/video_exhibition:/app" \
+                        -w /app \
+                        node:20-alpine \
+                        sh -c "npm ci && npm run build"
+                '''
             }
         }
 
