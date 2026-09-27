@@ -21,7 +21,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git credentialsId: 'github-token',
-                    url: 'https://github.com/zefengqiu1/expapp.git',
+                    url: 'https://github.com/zefengqiu1/ImageExhibition.git',
                     branch: 'movie'
             }
         }
