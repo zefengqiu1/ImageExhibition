@@ -2,6 +2,7 @@ import * as Axios from 'axios';
 
 export const axios = Axios.default.create({
   // baseURL: 'https://lsp66.com',
+  // baseURL: 'http://localhost:8081',
   baseURL: process.env.REACT_APP_API_BASE_URL || '',
   // headers: {
   //   'Authorization': 'Bearer ' + localStorage.getItem('token'),  // 添加 Authorization 头
