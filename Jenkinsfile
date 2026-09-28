@@ -133,6 +133,7 @@ pipeline {
                         -v "$HOME/image-exhibition/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro" \\
                         prom/prometheus:latest
                     docker start "$PROMETHEUS_CONTAINER" >/dev/null 2>&1 || true
+                    docker network connect "$NETWORK_NAME" "$PROMETHEUS_CONTAINER" >/dev/null 2>&1 || true
 
                     docker ps -a --format '{{.Names}}' | grep -qx "$GRAFANA_CONTAINER" || \\
                     docker run -d \\
@@ -142,6 +143,7 @@ pipeline {
                         -v grafana_data:/var/lib/grafana \\
                         grafana/grafana:latest
                     docker start "$GRAFANA_CONTAINER" >/dev/null 2>&1 || true
+                    docker network connect "$NETWORK_NAME" "$GRAFANA_CONTAINER" >/dev/null 2>&1 || true
                 '''
             }
         }
