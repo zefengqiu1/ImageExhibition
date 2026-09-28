@@ -149,9 +149,21 @@ pipeline {
         stage('Smoke Check') {
             steps {
                 sh '''
-                    sleep 10
-                    docker run --rm --network "$NETWORK_NAME" curlimages/curl:8.10.1 \
-                        curl -fsS http://backend:8081/actuator/health
+                    for i in $(seq 1 24); do
+                        if docker run --rm --network "$NETWORK_NAME" curlimages/curl:8.10.1 \
+                            curl -fsS http://backend:8081/actuator/health; then
+                            break
+                        fi
+
+                        if [ "$i" = "24" ]; then
+                            docker ps -a --filter "name=^/$BACKEND_CONTAINER$"
+                            docker logs --tail=200 "$BACKEND_CONTAINER" || true
+                            exit 1
+                        fi
+
+                        sleep 5
+                    done
+
                     docker run --rm --network "$NETWORK_NAME" curlimages/curl:8.10.1 \
                         curl -fsS http://prometheus:9090/-/ready
                 '''
