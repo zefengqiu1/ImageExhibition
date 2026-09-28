@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         SERVER_HOST = '192.210.161.144'
-        DOCKERHUB_NAMESPACE = 'zefengqiu1'
+        DOCKERHUB_NAMESPACE = 'zefengqiu'
 
         NETWORK_NAME = 'image-exhibition-net'
         BACKEND_CONTAINER = 'backend'
@@ -12,8 +12,8 @@ pipeline {
         PROMETHEUS_CONTAINER = 'prometheus'
         GRAFANA_CONTAINER = 'grafana'
 
-        BACKEND_IMAGE = 'zefengqiu1/image-exhibition-backend'
-        FRONTEND_IMAGE = 'zefengqiu1/image-exhibition-frontend'
+        BACKEND_IMAGE = 'zefengqiu/image-exhibition-backend'
+        FRONTEND_IMAGE = 'zefengqiu/image-exhibition-frontend'
         IMAGE_TAG = "${BUILD_NUMBER}"
 
         DOCKER_HOST = 'unix:///var/run/docker.sock'
