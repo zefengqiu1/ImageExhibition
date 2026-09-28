@@ -15,6 +15,10 @@ pipeline {
         BACKEND_IMAGE = 'zefengqiu1/image-exhibition-backend'
         FRONTEND_IMAGE = 'zefengqiu1/image-exhibition-frontend'
         IMAGE_TAG = "${BUILD_NUMBER}"
+
+        DOCKER_HOST = 'unix:///var/run/docker.sock'
+        DOCKER_TLS_VERIFY = ''
+        DOCKER_CERT_PATH = ''
     }
 
     stages {
@@ -39,7 +43,7 @@ pipeline {
                         -v "$PWD/video_exhibition:/app" \
                         -w /app \
                         node:20-alpine \
-                        sh -c "npm ci && npm run build"
+                        sh -c "if [ -f package-lock.json ]; then npm ci; else npm install; fi && npm run build"
                 '''
             }
         }
