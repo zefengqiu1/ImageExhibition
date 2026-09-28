@@ -148,11 +148,13 @@ pipeline {
 
         stage('Smoke Check') {
             steps {
-                sh """
+                sh '''
                     sleep 10
-                    curl -fsS http://localhost:8081/actuator/health
-                    curl -fsS http://localhost:9090/-/ready
-                """
+                    docker run --rm --network "$NETWORK_NAME" curlimages/curl:8.10.1 \
+                        curl -fsS http://backend:8081/actuator/health
+                    docker run --rm --network "$NETWORK_NAME" curlimages/curl:8.10.1 \
+                        curl -fsS http://prometheus:9090/-/ready
+                '''
             }
         }
     }
