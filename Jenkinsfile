@@ -40,8 +40,8 @@ pipeline {
             steps {
                 sh '''
                     docker run --rm \
-                        -v "$PWD/video_exhibition:/app" \
-                        -w /app \
+                        --volumes-from jenkins \
+                        -w "$PWD/video_exhibition" \
                         node:20-alpine \
                         sh -c "if [ -f package-lock.json ]; then npm ci; else npm install; fi && npm run build"
                 '''
