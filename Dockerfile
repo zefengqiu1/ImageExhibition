@@ -1,6 +1,4 @@
-# make sure jdk can be found from docker hub
-# 使用官方的 OpenJDK 作为基础镜像
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
 #s make sure have /app backslash at front, otherwise copy can fail
 COPY target/imageExhibition-0.0.1-SNAPSHOT.jar /app/imageExhibition-0.0.1-SNAPSHOT.jar
