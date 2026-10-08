@@ -37,6 +37,9 @@ export default function Header() {
         <Link to="/analytics" className={styles.text}>
           数据分析
         </Link>
+        <Link to="/admin/videos" className={styles.text}>
+          影片管理
+        </Link>
       </nav>
       <AutoComplete />
     </header>

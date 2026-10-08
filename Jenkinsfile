@@ -123,9 +123,7 @@ pipeline {
         stage('Deploy Monitoring') {
             steps {
                 sh '''
-                    docker rm -f "$PROMETHEUS_CONTAINER" || true
-                    docker rm -f "$GRAFANA_CONTAINER" || true
-
+                    docker ps -a --format '{{.Names}}' | grep -qx "$PROMETHEUS_CONTAINER" || \\
                     docker run -d \\
                         --name "$PROMETHEUS_CONTAINER" \\
                         --network "$NETWORK_NAME" \\
@@ -134,7 +132,9 @@ pipeline {
                         -p 9090:9090 \\
                         prom/prometheus:latest \\
                         --config.file="$PWD/deploy/prometheus/prometheus.yml"
+                    docker start "$PROMETHEUS_CONTAINER" >/dev/null 2>&1 || true
 
+                    docker ps -a --format '{{.Names}}' | grep -qx "$GRAFANA_CONTAINER" || \\
                     docker run -d \\
                         --name "$GRAFANA_CONTAINER" \\
                         --network "$NETWORK_NAME" \\
@@ -142,6 +142,7 @@ pipeline {
                         -p 3000:3000 \\
                         -v grafana_data:/var/lib/grafana \\
                         grafana/grafana:latest
+                    docker start "$GRAFANA_CONTAINER" >/dev/null 2>&1 || true
                 '''
             }
         }
