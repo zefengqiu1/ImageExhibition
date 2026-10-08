@@ -89,8 +89,6 @@ pipeline {
                         mongo:latest
                     docker start "$MONGO_CONTAINER" >/dev/null 2>&1 || true
 
-                    mkdir -p "$HOME/image-exhibition/prometheus"
-                    cp deploy/prometheus/prometheus.yml "$HOME/image-exhibition/prometheus/prometheus.yml"
                 '''
             }
         }
@@ -125,25 +123,25 @@ pipeline {
         stage('Deploy Monitoring') {
             steps {
                 sh '''
-                    docker ps -a --format '{{.Names}}' | grep -qx "$PROMETHEUS_CONTAINER" || \\
+                    docker rm -f "$PROMETHEUS_CONTAINER" || true
+                    docker rm -f "$GRAFANA_CONTAINER" || true
+
                     docker run -d \\
                         --name "$PROMETHEUS_CONTAINER" \\
                         --network "$NETWORK_NAME" \\
+                        --restart unless-stopped \\
+                        --volumes-from jenkins \\
                         -p 9090:9090 \\
-                        -v "$HOME/image-exhibition/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro" \\
-                        prom/prometheus:latest
-                    docker start "$PROMETHEUS_CONTAINER" >/dev/null 2>&1 || true
-                    docker network connect "$NETWORK_NAME" "$PROMETHEUS_CONTAINER" >/dev/null 2>&1 || true
+                        prom/prometheus:latest \\
+                        --config.file="$PWD/deploy/prometheus/prometheus.yml"
 
-                    docker ps -a --format '{{.Names}}' | grep -qx "$GRAFANA_CONTAINER" || \\
                     docker run -d \\
                         --name "$GRAFANA_CONTAINER" \\
                         --network "$NETWORK_NAME" \\
+                        --restart unless-stopped \\
                         -p 3000:3000 \\
                         -v grafana_data:/var/lib/grafana \\
                         grafana/grafana:latest
-                    docker start "$GRAFANA_CONTAINER" >/dev/null 2>&1 || true
-                    docker network connect "$NETWORK_NAME" "$GRAFANA_CONTAINER" >/dev/null 2>&1 || true
                 '''
             }
         }
@@ -168,6 +166,9 @@ pipeline {
 
                     docker run --rm --network "$NETWORK_NAME" curlimages/curl:8.10.1 \
                         curl -fsS http://prometheus:9090/-/ready
+
+                    docker run --rm --network "$NETWORK_NAME" curlimages/curl:8.10.1 \
+                        curl -fsS http://grafana:3000/api/health
                 '''
             }
         }
